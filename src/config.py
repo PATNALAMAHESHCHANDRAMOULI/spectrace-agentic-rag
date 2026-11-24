@@ -22,6 +22,16 @@ class Settings(BaseSettings):
     max_agent_steps: int = 6
     llm_temperature: float = 0.0
 
+    # RAG Configuration (Phase 2 - LlamaIndex Hybrid RAG)
+    raw_pdf_dir: str = "data/raw_pdfs"
+    chroma_persist_dir: str = "chroma_db"
+    chroma_collection_name: str = "spectrace_datasheets"
+    docstore_path: str = "chroma_db/docstore.json"
+    embedding_model_name: str = "BAAI/bge-small-en-v1.5"
+    reranker_model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    chunk_size: int = 512
+    chunk_overlap: int = 64
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

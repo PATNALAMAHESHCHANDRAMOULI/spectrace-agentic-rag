@@ -1,0 +1,10 @@
+# Secrets & virtual environment (NEVER commit these)
+.env
+.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Local vector database & temporary outputs
+chroma_db/

@@ -8,3 +8,5 @@ __pycache__/
 
 # Local vector database & temporary outputs
 chroma_db/
+# Editor settings
+.vscode/

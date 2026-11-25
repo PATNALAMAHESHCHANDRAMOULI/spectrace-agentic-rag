@@ -8,3 +8,5 @@ llama-index-retrievers-bm25>=0.5.0
 chromadb>=0.6.0
 pypdf>=5.0.0
 sentence-transformers>=3.0.0
+smolagents[litellm]>=1.14.0
+litellm>=1.55.0

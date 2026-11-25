@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     # LLM Model IDs (stored in one place so model upgrades take 1 line)
     primary_llm_model: str = "openai/gpt-oss-120b"
     fast_llm_model: str = "openai/gpt-oss-20b"
+    agent_tool_model: str = "qwen/qwen3.8-27b"
 
     # Agent Guardrails
     max_agent_steps: int = 6

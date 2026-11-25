@@ -10,3 +10,4 @@ pypdf>=5.0.0
 sentence-transformers>=3.0.0
 smolagents[litellm]>=1.14.0
 litellm>=1.55.0
+langgraph>=0.2.50

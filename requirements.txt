@@ -13,3 +13,6 @@ litellm>=1.55.0
 langgraph>=0.2.50
 ddgs>=7.0.0
 langfuse>=2.50.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+fastmcp>=2.0.0

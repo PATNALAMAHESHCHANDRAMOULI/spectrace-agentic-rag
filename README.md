@@ -1,3 +1,11 @@
+---
+title: SpecTrace
+emoji: ⚡
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 7860
+---
 # SpecTrace
 
 Multi-agent RAG pipeline for querying hardware datasheets (`ESP32-S3-WROOM-1` and `STM32F401xB/C`), verifying page-level citations, and running duty-cycle/battery-life calculations in a restricted Python sandbox.

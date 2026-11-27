@@ -83,25 +83,19 @@ class SpecTraceOrchestrator:
             return f"Web search unavailable ({exc})."
 
     # --- Node 1: Intent Router ---
+    # --- Node 1: Intent Router ---
     def route_query(self, state: SpecTraceState) -> dict:
-        """Route queries to web_lookup, rag_compute (math/duty-cycle), or rag_only (datasheet facts)."""
+        """Route queries to web_lookup, rag_compute (numeric math/duty-cycle), or rag_only (datasheet facts)."""
         q_lower = state["question"].lower()
         web_keywords = ["price", "cost", "buy", "latest news", "release date", "web", "online"]
-        math_keywords = [
-            "calculate",
-            "battery life",
-            "duty cycle",
-            "average current",
-            "mah",
-            "difference",
-            "compare",
-            "how many days",
-            "how many hours",
-        ]
+        explicit_math = ["calculate", "compute", "average current", "duty cycle", "how many days", "how many hours"]
+        numeric_context = bool(re.search(r"\b\d+(?:\.\d+)?\s*(?:mah|ah|%|ma|ua|µa|v|hz|mhz)\b", q_lower))
 
         if any(k in q_lower for k in web_keywords):
             intent: Literal["rag_only", "rag_compute", "web_lookup"] = "web_lookup"
-        elif any(k in q_lower for k in math_keywords):
+        elif any(k in q_lower for k in explicit_math) and numeric_context:
+            intent = "rag_compute"
+        elif "battery life" in q_lower and numeric_context:
             intent = "rag_compute"
         else:
             intent = "rag_only"

@@ -63,6 +63,7 @@ class EngineeringCodeAnalyst:
         self.model = LiteLLMModel(
             model_id=f"groq/{settings.agent_tool_model}",
             temperature=settings.llm_temperature,
+            max_tokens=1024,
             num_retries=2,
         )
         math_tool = _build_python_math_tool()
@@ -80,21 +81,26 @@ class EngineeringCodeAnalyst:
             f"Question:\n{question}\n\n"
             f"Retrieved Datasheet Evidence:\n{evidence_context}\n\n"
             "Instructions:\n"
-            "1. Extract the exact values carefully from the evidence above (match each label to the number that follows it).\n"
-            "2. Call run_python_math once to compute average current (mA), battery life in hours, and battery life in days (hours / 24).\n"
-            "3. You MUST finish by calling the final_answer tool with your concise answer citing the exact PDF filenames and page numbers. Never reply with plain text.\n"
+            "1. Extract only the exact numbers needed from the evidence above.\n"
+            "2. Call run_python_math ONCE with short, clean Python (under 10 lines, NO comments) to compute average current (mA), battery life in hours, and days (hours / 24).\n"
+            "3. Call final_answer with a concise response citing the exact PDF filename and page numbers. Never reply with plain text.\n"
         )
 
         for attempt in range(1, 4):
             try:
-                final_output = self.agent.run(task)
+                final_output = str(self.agent.run(task)).strip()
+                if final_output.startswith("Calling tools:"):
+                    final_output = (
+                        "Could not complete automated calculation within step limits. "
+                        "Please specify the exact battery capacity (mAh) and active duty cycle (%)."
+                    )
                 step_count = (
                     len(self.agent.memory.steps)
                     if hasattr(self.agent, "memory")
                     else 0
                 )
                 return ComputationResult(
-                    summary=str(final_output).strip(),
+                    summary=final_output,
                     steps_taken=step_count,
                 )
             except Exception as exc:
